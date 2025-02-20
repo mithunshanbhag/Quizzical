@@ -2,7 +2,7 @@
 
 internal class QuestionFactory(ILogger<QuestionFactory> logger, ChatClient chatClient) : IQuestionFactory
 {
-    public async Task<Question[]> GenerateAsync(QuizMetadata request, CancellationToken cancellationToken = default)
+    public async Task<Question[]> GenerateAsync(QuizConfig request, CancellationToken cancellationToken = default)
     {
         try
         {
@@ -29,7 +29,7 @@ internal class QuestionFactory(ILogger<QuestionFactory> logger, ChatClient chatC
         }
     }
 
-    private async Task<TQuestion[]> GenerateQuestionsAsync<TQuestion>(QuizMetadata request, CancellationToken cancellationToken)
+    private async Task<TQuestion[]> GenerateQuestionsAsync<TQuestion>(QuizConfig request, CancellationToken cancellationToken)
         where TQuestion : Question
     {
         var chatMessages = ComposeChatMessage(request);
@@ -48,7 +48,7 @@ internal class QuestionFactory(ILogger<QuestionFactory> logger, ChatClient chatC
             });
     }
 
-    private static List<ChatMessage> ComposeChatMessage(QuizMetadata request)
+    private static List<ChatMessage> ComposeChatMessage(QuizConfig request)
     {
         return
         [

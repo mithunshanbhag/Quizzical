@@ -18,8 +18,8 @@ internal static class HostApplicationBuilderExtension
         builder.Services.AddMediatR(cfg => { cfg.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly()); });
 
         // openai client
-        var quizzicalOpenAiApiKey = builder.Configuration["OpenAi:ApiKey"];
-        var quizzicalOpenAiModel = builder.Configuration["OpenAi:Model"];
+        var quizzicalOpenAiApiKey = builder.Configuration[ConfigKeys.OpenAiApiKey];
+        var quizzicalOpenAiModel = builder.Configuration[ConfigKeys.OpenAiModel];
         var openAiChatClient = new ChatClient(quizzicalOpenAiModel, quizzicalOpenAiApiKey);
         builder.Services.AddSingleton(openAiChatClient);
 

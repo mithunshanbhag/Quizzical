@@ -19,7 +19,7 @@ namespace Quizzical.Misc.Utilities;
  * 6. At any point, if the user wants to quit, they can do so by pressing Ctrl+C.
  */
 
-internal class QuizEngine(IQuizFactory quizFactory, IEnumerable<IQuizPlayStrategy> quizPlayStrategies)
+internal class QuizEngine(IConfiguration config, IQuizFactory quizFactory, IEnumerable<IQuizPlayStrategy> quizPlayStrategies)
 {
     public async Task RunAsync(CancellationToken cancellationToken = default)
     {
@@ -29,15 +29,15 @@ internal class QuizEngine(IQuizFactory quizFactory, IEnumerable<IQuizPlayStrateg
 
         while (play && !cancellationToken.IsCancellationRequested)
         {
-            var quizMetadata = GetUserSelections();
+            var quizConfig = GetUserSelections();
 
-            var quiz = await quizFactory.GenerateAsync(quizMetadata, cancellationToken);
+            var quiz = await quizFactory.GenerateAsync(quizConfig, cancellationToken);
 
-            IQuizPlayStrategy quizPlayStrategy = quizMetadata.QuestionType switch
+            IQuizPlayStrategy quizPlayStrategy = quizConfig.QuestionType switch
             {
                 QuestionType.MultipleChoice => quizPlayStrategies.OfType<MultipleChoiceQuizPlayStrategy>().Single(),
                 QuestionType.TrueFalse => quizPlayStrategies.OfType<TrueFalseQuizPlayStrategy>().Single(),
-                _ => throw new NotSupportedException($"Question type {quizMetadata.QuestionType} is not supported yet.")
+                _ => throw new NotSupportedException($"Question type {quizConfig.QuestionType} is not supported yet.")
             };
 
             var quizResponse = await quizPlayStrategy.ExecuteAsync(quiz, cancellationToken);
@@ -54,17 +54,19 @@ internal class QuizEngine(IQuizFactory quizFactory, IEnumerable<IQuizPlayStrateg
         await Task.Delay(duration);
     }
 
-    private static QuizMetadata GetUserSelections()
+    private QuizConfig GetUserSelections()
     {
-        var selectedTopic = GetUserSelectedTopic();
+        var quizConfig = config.GetSection(ConfigKeys.QuizConfig).Get<QuizConfig>();
 
-        var selectedQuizType = GetUserSelectedQuizType();
+        var selectedTopic = quizConfig?.Topic ?? GetUserSelectedTopic();
 
-        var selectedNumberOfQuestions = GetUserSelectedNumberOfQuestions();
+        var selectedQuizType = quizConfig?.QuestionType ?? GetUserSelectedQuizType();
 
-        var selectedDifficultyLevel = GetUserSelectedDifficultyLevel();
+        var selectedNumberOfQuestions = quizConfig?.NumberOfQuestions ?? GetUserSelectedNumberOfQuestions();
 
-        return new QuizMetadata
+        var selectedDifficultyLevel = quizConfig?.DifficultyLevel ?? GetUserSelectedDifficultyLevel();
+
+        return new QuizConfig
         {
             QuestionType = selectedQuizType,
             Topic = selectedTopic,
@@ -119,7 +121,7 @@ internal class QuizEngine(IQuizFactory quizFactory, IEnumerable<IQuizPlayStrateg
             new ConfirmationPrompt("Would you like to play again?"));
     }
 
-    private static void DisplayFinalScore(QuizResponse quizResponse)
+    private static void DisplayFinalScore(QuizResponse _)
     {
         AnsiConsole.Clear();
         //throw new NotImplementedException();

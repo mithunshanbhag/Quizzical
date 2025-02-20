@@ -2,5 +2,5 @@
 
 internal interface IQuizFactory
 {
-    Task<Quiz> GenerateAsync(QuizMetadata request, CancellationToken cancellationToken = default);
+    Task<Quiz> GenerateAsync(QuizConfig request, CancellationToken cancellationToken = default);
 }

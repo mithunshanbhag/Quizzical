@@ -1,17 +1,17 @@
 ﻿namespace Quizzical.Models;
 
 /// <summary>
-///     The metadata required to create a quiz.
+///     The configuration required to create a quiz.
 /// </summary>
-internal class QuizMetadata
+internal class QuizConfig
 {
     /// <summary>
-    ///     The type of question.
+    ///     The type of question. See <see cref="Quizzical.Constants.Enums.QuestionType" />
     /// </summary>
     public QuestionType QuestionType { get; set; }
 
     /// <summary>
-    ///     The difficulty level of the question.
+    ///     The difficulty level of the question. See <see cref="Quizzical.Constants.Enums.QuestionDifficultyLevel" />
     /// </summary>
     public QuestionDifficultyLevel DifficultyLevel { get; set; }
 
