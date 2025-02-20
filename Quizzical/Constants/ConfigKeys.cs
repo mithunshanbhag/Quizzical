@@ -1,7 +1,7 @@
 ﻿namespace Quizzical.Constants;
 
 /// <summary>
-/// Configuration keys for the application.
+///     Configuration keys for the application.
 /// </summary>
 internal class ConfigKeys
 {

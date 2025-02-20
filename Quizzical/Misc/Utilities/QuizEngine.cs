@@ -29,7 +29,7 @@ internal class QuizEngine(IConfiguration config, IQuizFactory quizFactory, IEnum
 
         while (play && !cancellationToken.IsCancellationRequested)
         {
-            var quizConfig = GetUserSelections();
+            var quizConfig = GetQuizConfig();
 
             var quiz = await quizFactory.GenerateAsync(quizConfig, cancellationToken);
 
@@ -54,25 +54,17 @@ internal class QuizEngine(IConfiguration config, IQuizFactory quizFactory, IEnum
         await Task.Delay(duration);
     }
 
-    private QuizConfig GetUserSelections()
+    private QuizConfig GetQuizConfig()
     {
         var quizConfig = config.GetSection(ConfigKeys.QuizConfig).Get<QuizConfig>();
 
-        var selectedTopic = quizConfig?.Topic ?? GetUserSelectedTopic();
-
-        var selectedQuizType = quizConfig?.QuestionType ?? GetUserSelectedQuizType();
-
-        var selectedNumberOfQuestions = quizConfig?.NumberOfQuestions ?? GetUserSelectedNumberOfQuestions();
-
-        var selectedDifficultyLevel = quizConfig?.DifficultyLevel ?? GetUserSelectedDifficultyLevel();
-
         return new QuizConfig
         {
-            QuestionType = selectedQuizType,
-            Topic = selectedTopic,
+            QuestionType = quizConfig?.QuestionType ?? GetUserSelectedQuizType(),
+            Topic = quizConfig?.Topic ?? GetUserSelectedTopic(),
             Keywords = [],
-            NumberOfQuestions = selectedNumberOfQuestions,
-            DifficultyLevel = selectedDifficultyLevel
+            NumberOfQuestions = quizConfig?.NumberOfQuestions ?? GetUserSelectedNumberOfQuestions(),
+            DifficultyLevel = quizConfig?.DifficultyLevel ?? GetUserSelectedDifficultyLevel()
         };
     }
 
