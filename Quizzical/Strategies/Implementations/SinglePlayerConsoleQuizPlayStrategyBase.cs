@@ -3,7 +3,7 @@
 /// <summary>
 ///     Base strategy class for console-based, single-player quizzes.
 /// </summary>
-internal abstract class SinglePlayerConsolePlayStrategyBase : IQuizPlayStrategy
+internal abstract class SinglePlayerConsoleQuizPlayStrategyBase : IQuizPlayStrategy
 {
     /// <remarks>
     ///     This uses the template design pattern. It defines a skeleton (template) method that calls into

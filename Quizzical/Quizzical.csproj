@@ -17,6 +17,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
+		<Folder Include="Misc\Utilities\" />
 		<Folder Include="Services\Implementations\" />
 		<Folder Include="Services\Interfaces\" />
 	</ItemGroup>

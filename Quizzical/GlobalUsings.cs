@@ -15,7 +15,7 @@ global using Quizzical.Constants.Enums;
 global using Quizzical.Factories.Implementations;
 global using Quizzical.Factories.Interfaces;
 global using Quizzical.Misc.ExtensionMethods;
-global using Quizzical.Misc.Utilities;
+global using Quizzical;
 global using Quizzical.Models;
 global using Quizzical.Strategies.Implementations;
 global using Quizzical.Strategies.Interfaces;

@@ -38,7 +38,7 @@ internal static class HostApplicationBuilderExtension
 
         // misc
         builder.Services
-            .AddTransient<QuizEngine>();
+            .AddTransient<SinglePlayerConsoleQuizEngine>();
 
         return builder;
     }

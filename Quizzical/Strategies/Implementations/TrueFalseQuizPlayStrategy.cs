@@ -1,6 +1,6 @@
 namespace Quizzical.Strategies.Implementations;
 
-internal class TrueFalseQuizPlayStrategy : SinglePlayerConsolePlayStrategyBase
+internal class TrueFalseQuizPlayStrategy : SinglePlayerConsoleQuizPlayStrategyBase
 {
     protected override dynamic CaptureUserResponse(Question question)
     {

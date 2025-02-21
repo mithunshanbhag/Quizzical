@@ -1,6 +1,6 @@
 ﻿namespace Quizzical.Strategies.Implementations;
 
-internal class GroupableItemsQuizPlayStrategy : SinglePlayerConsolePlayStrategyBase
+internal class GroupableItemsQuizPlayStrategy : SinglePlayerConsoleQuizPlayStrategyBase
 {
     protected override dynamic CaptureUserResponse(Question question)
     {

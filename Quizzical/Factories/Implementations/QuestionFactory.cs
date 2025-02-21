@@ -36,17 +36,11 @@ internal class QuestionFactory(ILogger<QuestionFactory> logger, ChatClient chatC
         var chatMessages = ComposeChatMessage(request);
         var completionOptions = ComposeChatCompletionOptions<TQuestion>();
 
-        // @TODO: Need to fix the spinner display (doesn't seem to render correctly in Windows 11 Terminal).
-        return await AnsiConsole.Status()
-            .Spinner(Spinner.Known.Arrow3)
-            .StartAsync("Generating questions...", async ctx =>
-            {
-                var result = await chatClient.CompleteChatAsync(chatMessages, completionOptions, cancellationToken);
-                result.Value.Dump(logger); // dump debug details to console
+        var result = await chatClient.CompleteChatAsync(chatMessages, completionOptions, cancellationToken);
+        result.Value.Dump(logger); // dump debug details to console
 
-                var questionList = JsonSerializer.Deserialize<QuestionList<TQuestion>>(result.Value.Content.FirstOrDefault()?.Text!);
-                return questionList.Questions;
-            });
+        var questionList = JsonSerializer.Deserialize<QuestionList<TQuestion>>(result.Value.Content.FirstOrDefault()?.Text!);
+        return questionList.Questions;
     }
 
     private static List<ChatMessage> ComposeChatMessage(QuizConfig request)

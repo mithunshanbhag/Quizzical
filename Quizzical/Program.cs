@@ -4,5 +4,5 @@
     .ConfigureServices()
     .Build();
 
-var engine = host.Services.GetRequiredService<QuizEngine>();
+var engine = host.Services.GetRequiredService<SinglePlayerConsoleQuizEngine>();
 await engine.RunAsync(CancellationToken.None);

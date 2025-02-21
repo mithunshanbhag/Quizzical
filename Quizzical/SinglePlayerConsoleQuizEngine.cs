@@ -1,4 +1,4 @@
-namespace Quizzical.Misc.Utilities;
+namespace Quizzical;
 
 /*
  * Rough algorithm:
@@ -19,7 +19,7 @@ namespace Quizzical.Misc.Utilities;
  * 6. At any point, if the user wants to quit, they can do so by pressing Ctrl+C.
  */
 
-internal class QuizEngine(IConfiguration config, IQuizFactory quizFactory, IEnumerable<IQuizPlayStrategy> quizPlayStrategies)
+internal class SinglePlayerConsoleQuizEngine(IConfiguration config, IQuizFactory quizFactory, IEnumerable<IQuizPlayStrategy> quizPlayStrategies)
 {
     public async Task RunAsync(CancellationToken cancellationToken = default)
     {
@@ -31,7 +31,7 @@ internal class QuizEngine(IConfiguration config, IQuizFactory quizFactory, IEnum
         {
             var quizConfig = GetQuizConfig();
 
-            var quiz = await quizFactory.GenerateAsync(quizConfig, cancellationToken);
+            var quiz = await GenerateQuizAsync(quizConfig, cancellationToken);
 
             IQuizPlayStrategy quizPlayStrategy = quizConfig.QuestionType switch
             {
@@ -43,12 +43,22 @@ internal class QuizEngine(IConfiguration config, IQuizFactory quizFactory, IEnum
 
             var quizResponse = await quizPlayStrategy.ExecuteAsync(quiz, cancellationToken);
 
-            play = AskUserToPlayAgain(quizResponse);
+            play = await AskUserToPlayAgain(quizResponse);
         }
+    }
+
+    private async Task<Quiz> GenerateQuizAsync(QuizConfig quizConfig, CancellationToken cancellationToken)
+    {
+        return await AnsiConsole.Status()
+            .Spinner(Spinner.Known.Dots)
+            .StartAsync("Generating questions...", async ctx => await quizFactory.GenerateAsync(quizConfig, cancellationToken));
     }
 
     private static async Task ShowBanner(TimeSpan duration)
     {
+        // Small hack to ensure emojis are displayed correctly in Windows Terminal
+        Console.OutputEncoding = Encoding.UTF8;
+
         AnsiConsole.Write(new FigletText(AppConstants.AppName));
         await Task.Delay(duration);
     }
@@ -73,7 +83,7 @@ internal class QuizEngine(IConfiguration config, IQuizFactory quizFactory, IEnum
 
         return AnsiConsole.Prompt(
             new SelectionPrompt<QuestionDifficultyLevel>()
-                .Title("What difficulty level would you like to play?")
+                .Title($"What difficulty level would you like to play? {Emoji.Known.LevelSlider}")
                 .PageSize(8)
                 .HighlightStyle(Color.Cyan1.ToString())
                 .AddChoices(QuestionDifficultyLevel.Easy, QuestionDifficultyLevel.Medium, QuestionDifficultyLevel.Hard));
@@ -97,14 +107,14 @@ internal class QuizEngine(IConfiguration config, IQuizFactory quizFactory, IEnum
 
         return AnsiConsole.Prompt(
             new SelectionPrompt<QuestionType>()
-                .Title("What type of quiz would you like to play?")
+                .Title($"What type of quiz would you like to play? {Emoji.Known.GrinningFace}")
                 .PageSize(8)
                 .HighlightStyle(Color.Cyan1.ToString())
                 .MoreChoicesText("[cyan](Move up and down to reveal more topics)[/]")
                 .AddChoices(QuestionType.MultipleChoice, QuestionType.TrueFalse));
     }
 
-    private static bool AskUserToPlayAgain(QuizEvaluation quizEvaluation)
+    private static async Task<bool> AskUserToPlayAgain(QuizEvaluation quizEvaluation)
     {
         AnsiConsole.Clear();
 
@@ -112,15 +122,18 @@ internal class QuizEngine(IConfiguration config, IQuizFactory quizFactory, IEnum
         var correctAnswers = quizEvaluation.QuestionResponses.Count(qr => qr.Value);
         var incorrectAnswers = totalQuestions - correctAnswers;
 
+        AnsiConsole.WriteLine($"Game Over! {Emoji.Known.ThumbsUp}");
+        AnsiConsole.WriteLine();
         AnsiConsole.Write(new BreakdownChart()
             .Width(60)
             .AddItem("Right Answers", correctAnswers, Color.Green)
             .AddItem("Wrong Answers", incorrectAnswers, Color.Red));
 
+        await Task.Delay(2000);
         AnsiConsole.WriteLine();
 
         return AnsiConsole.Prompt(
-            new ConfirmationPrompt("Would you like to play again?"));
+            new ConfirmationPrompt($"Would you like to play again? {Emoji.Known.GrinningFace}"));
     }
 
     private static string GetUserSelectedTopic()
@@ -129,7 +142,7 @@ internal class QuizEngine(IConfiguration config, IQuizFactory quizFactory, IEnum
 
         return AnsiConsole.Prompt(
             new SelectionPrompt<string>()
-                .Title("Would you like to play a quiz?")
+                .Title($"What's your topic? {Emoji.Known.ThinkingFace}")
                 .PageSize(8)
                 .HighlightStyle(Color.Cyan1.ToString())
                 .MoreChoicesText("[cyan](Move up and down to reveal more topics)[/]")
