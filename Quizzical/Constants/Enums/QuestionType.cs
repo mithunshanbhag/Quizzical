@@ -29,10 +29,9 @@ internal enum QuestionType
     FillInTheBlank,
 
     /// <summary>
-    ///     Answer involves matching items, events, or steps to one another.
+    ///     A question with multiple answer choices, with some choices belonging to a single group.
     /// </summary>
-    [Obsolete("Reserved for future use.")] [EditorBrowsable(EditorBrowsableState.Never)]
-    PairMatch,
+    GroupableItems,
 
     /// <summary>
     ///     Answer involves arranging items, events, or steps in the correct sequence (e.g., chronological order, process

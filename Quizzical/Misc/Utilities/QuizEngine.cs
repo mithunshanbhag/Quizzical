@@ -37,14 +37,13 @@ internal class QuizEngine(IConfiguration config, IQuizFactory quizFactory, IEnum
             {
                 QuestionType.MultipleChoice => quizPlayStrategies.OfType<MultipleChoiceQuizPlayStrategy>().Single(),
                 QuestionType.TrueFalse => quizPlayStrategies.OfType<TrueFalseQuizPlayStrategy>().Single(),
+                QuestionType.GroupableItems => quizPlayStrategies.OfType<GroupableItemsQuizPlayStrategy>().Single(),
                 _ => throw new NotSupportedException($"Question type {quizConfig.QuestionType} is not supported yet.")
             };
 
             var quizResponse = await quizPlayStrategy.ExecuteAsync(quiz, cancellationToken);
 
-            DisplayFinalScore(quizResponse);
-
-            play = AskUserToPlayAgain();
+            play = AskUserToPlayAgain(quizResponse);
         }
     }
 
@@ -105,18 +104,23 @@ internal class QuizEngine(IConfiguration config, IQuizFactory quizFactory, IEnum
                 .AddChoices(QuestionType.MultipleChoice, QuestionType.TrueFalse));
     }
 
-    private static bool AskUserToPlayAgain()
+    private static bool AskUserToPlayAgain(QuizEvaluation quizEvaluation)
     {
         AnsiConsole.Clear();
+
+        var totalQuestions = quizEvaluation.QuestionResponses.Count;
+        var correctAnswers = quizEvaluation.QuestionResponses.Count(qr => qr.Value);
+        var incorrectAnswers = totalQuestions - correctAnswers;
+
+        AnsiConsole.Write(new BreakdownChart()
+            .Width(60)
+            .AddItem("Right Answers", correctAnswers, Color.Green)
+            .AddItem("Wrong Answers", incorrectAnswers, Color.Red));
+
+        AnsiConsole.WriteLine();
 
         return AnsiConsole.Prompt(
             new ConfirmationPrompt("Would you like to play again?"));
-    }
-
-    private static void DisplayFinalScore(QuizResponse _)
-    {
-        AnsiConsole.Clear();
-        //throw new NotImplementedException();
     }
 
     private static string GetUserSelectedTopic()

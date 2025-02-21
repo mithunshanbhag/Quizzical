@@ -2,5 +2,5 @@ namespace Quizzical.Strategies.Interfaces;
 
 internal interface IQuizPlayStrategy
 {
-    Task<QuizResponse> ExecuteAsync(Quiz quiz, CancellationToken cancellationToken = default);
+    Task<QuizEvaluation> ExecuteAsync(Quiz quiz, CancellationToken cancellationToken = default);
 }

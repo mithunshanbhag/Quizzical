@@ -4,7 +4,7 @@ internal class MultipleChoiceQuizPlayStrategy : SinglePlayerConsolePlayStrategyB
 {
     protected override dynamic CaptureUserResponse(Question question)
     {
-        var multipleChoiceQuestion = (MultipleChoiceQuestion) question;
+        var multipleChoiceQuestion = (MultipleChoiceQuestion)question;
 
         var selectedAnswer = AnsiConsole.Prompt(
             new SelectionPrompt<string>()

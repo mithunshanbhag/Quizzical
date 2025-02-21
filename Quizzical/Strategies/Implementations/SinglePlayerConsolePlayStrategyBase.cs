@@ -9,9 +9,13 @@ internal abstract class SinglePlayerConsolePlayStrategyBase : IQuizPlayStrategy
     ///     This uses the template design pattern. It defines a skeleton (template) method that calls into
     ///     other virtual/abstract (hook) methods overridden by derived classes.
     /// </remarks>
-    public async Task<QuizResponse> ExecuteAsync(Quiz quiz, CancellationToken cancellationToken = default)
+    public async Task<QuizEvaluation> ExecuteAsync(Quiz quiz, CancellationToken cancellationToken = default)
     {
-        for (var index = 0; index < quiz.Questions.Length; index++)
+        var quizResponse = new QuizEvaluation();
+
+        var toContinue = true;
+
+        for (var index = 0; index < quiz.Questions.Length && toContinue; index++)
         {
             var currentQuestion = quiz.Questions[index];
 
@@ -21,11 +25,12 @@ internal abstract class SinglePlayerConsolePlayStrategyBase : IQuizPlayStrategy
 
             var isCorrect = currentQuestion.Evaluate(selectedAnswer);
 
-            ShowEvaluation(currentQuestion, isCorrect, index, quiz.Questions.Length);
+            quizResponse.QuestionResponses.Add(currentQuestion, isCorrect);
+
+            toContinue = ShowEvaluation(currentQuestion, isCorrect, index, quiz.Questions.Length);
         }
 
-        // @TODO: Implement scoring
-        return await Task.FromResult(new QuizResponse());
+        return await Task.FromResult(quizResponse);
     }
 
     protected virtual void DisplayQuestion(Question question, int index, int totalQuestions)
@@ -35,7 +40,7 @@ internal abstract class SinglePlayerConsolePlayStrategyBase : IQuizPlayStrategy
             .Columns(new TaskDescriptionColumn(), new ProgressBarColumn())
             .Start(ctx =>
             {
-                var progressTask = ctx.AddTask($"Question {index + 1} of {totalQuestions}", new ProgressTaskSettings {MaxValue = totalQuestions});
+                var progressTask = ctx.AddTask($"Question {index + 1} of {totalQuestions}", new ProgressTaskSettings { MaxValue = totalQuestions });
                 progressTask.Increment(index);
             });
 
@@ -45,7 +50,7 @@ internal abstract class SinglePlayerConsolePlayStrategyBase : IQuizPlayStrategy
 
     protected abstract dynamic CaptureUserResponse(Question question);
 
-    protected virtual void ShowEvaluation(Question question, bool isCorrect, int index, int totalQuestions)
+    protected virtual bool ShowEvaluation(Question question, bool isCorrect, int index, int totalQuestions)
     {
         if (question.ExplanationText is not null)
         {
@@ -54,7 +59,10 @@ internal abstract class SinglePlayerConsolePlayStrategyBase : IQuizPlayStrategy
         }
 
         AnsiConsole.WriteLine();
-        AnsiConsole.WriteLine("Press any key to continue.");
-        Console.ReadKey(true);
+        var toContinue = AnsiConsole.Prompt(
+            new ConfirmationPrompt("Continue?")
+                .HideDefaultValue());
+
+        return toContinue;
     }
 }

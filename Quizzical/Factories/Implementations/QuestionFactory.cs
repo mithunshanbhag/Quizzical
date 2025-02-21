@@ -10,6 +10,7 @@ internal class QuestionFactory(ILogger<QuestionFactory> logger, ChatClient chatC
             {
                 QuestionType.MultipleChoice => await GenerateQuestionsAsync<MultipleChoiceQuestion>(request, cancellationToken),
                 QuestionType.TrueFalse => await GenerateQuestionsAsync<TrueFalseQuestion>(request, cancellationToken),
+                QuestionType.GroupableItems => await GenerateQuestionsAsync<GroupableItemsQuestion>(request, cancellationToken),
                 _ => throw new NotImplementedException()
             };
 
