@@ -1,6 +1,7 @@
-![image](https://github.com/user-attachments/assets/1eb38130-c916-4191-9da5-58e6a9841b0d)
+# ✨ Quizzical: AI-generated quizzes! ✨
 
-## ✨ AI-generated quizzes!
+![quizzical](https://github.com/user-attachments/assets/a9a8db3e-5613-4f03-a649-9b0608edee48)
+
 
 Currently, this CLI app can generate the following types of quizzes:
 
