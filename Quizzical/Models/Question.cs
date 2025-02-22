@@ -31,7 +31,7 @@ internal abstract class Question : IFlaggable
     ///     The user's answer.
     /// </param>
     /// <returns>
-    ///     True if the user's answer is correct; otherwise, false.
+    ///     True if the user's answer is correct; False if incorrect; Null if the user has skipped answering.
     /// </returns>
-    public abstract bool Evaluate(dynamic answer);
+    public abstract bool? Evaluate(dynamic? answer);
 }

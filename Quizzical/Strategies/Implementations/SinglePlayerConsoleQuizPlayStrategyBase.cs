@@ -23,11 +23,11 @@ internal abstract class SinglePlayerConsoleQuizPlayStrategyBase : IQuizPlayStrat
 
             var selectedAnswer = CaptureUserResponse(currentQuestion);
 
-            var isCorrect = currentQuestion.Evaluate(selectedAnswer);
+            var evaluation = currentQuestion.Evaluate(selectedAnswer);
 
-            quizResponse.QuestionResponses.Add(currentQuestion, isCorrect);
+            quizResponse.QuestionResponses.Add(currentQuestion, evaluation);
 
-            toContinue = ShowEvaluation(currentQuestion, isCorrect, index, quiz.Questions.Length);
+            toContinue = ShowEvaluation(currentQuestion, evaluation, index, quiz.Questions.Length);
         }
 
         return await Task.FromResult(quizResponse);
@@ -40,7 +40,7 @@ internal abstract class SinglePlayerConsoleQuizPlayStrategyBase : IQuizPlayStrat
             .Columns(new TaskDescriptionColumn(), new ProgressBarColumn())
             .Start(ctx =>
             {
-                var progressTask = ctx.AddTask($"Question {index + 1} of {totalQuestions}", new ProgressTaskSettings { MaxValue = totalQuestions });
+                var progressTask = ctx.AddTask($"Question {index + 1} of {totalQuestions}", new ProgressTaskSettings {MaxValue = totalQuestions});
                 progressTask.Increment(index);
             });
 
@@ -48,13 +48,17 @@ internal abstract class SinglePlayerConsoleQuizPlayStrategyBase : IQuizPlayStrat
         AnsiConsole.WriteLine();
     }
 
-    protected abstract dynamic CaptureUserResponse(Question question);
+    protected abstract dynamic? CaptureUserResponse(Question question);
 
-    protected virtual bool ShowEvaluation(Question question, bool isCorrect, int index, int totalQuestions)
+    protected virtual bool ShowEvaluation(Question question, bool? evaluation, int index, int totalQuestions)
     {
         if (question.ExplanationText is not null)
         {
-            AnsiConsole.Markup(isCorrect ? "[green]Correct: [/]" : "[red]Incorrect: [/]");
+            AnsiConsole.Markup(evaluation.HasValue
+                ? evaluation.Value
+                    ? "[green]Correct: [/]"
+                    : "[red]Incorrect: [/]"
+                : "[yellow]Skipped: [/]");
             AnsiConsole.MarkupLine(question.ExplanationText);
         }
 

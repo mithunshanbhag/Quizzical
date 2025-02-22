@@ -2,9 +2,9 @@
 
 internal class GroupableItemsQuizPlayStrategy : SinglePlayerConsoleQuizPlayStrategyBase
 {
-    protected override dynamic CaptureUserResponse(Question question)
+    protected override dynamic? CaptureUserResponse(Question question)
     {
-        var groupableItemsQuestion = (GroupableItemsQuestion)question;
+        var groupableItemsQuestion = (GroupableItemsQuestion) question;
 
         var multiSelection = AnsiConsole.Prompt(
             new MultiSelectionPrompt<string>()
@@ -12,7 +12,11 @@ internal class GroupableItemsQuizPlayStrategy : SinglePlayerConsoleQuizPlayStrat
                 //.Required(false)
                 .HighlightStyle(Color.Cyan1.ToString())
                 .PageSize(10)
-                .AddChoices(groupableItemsQuestion.AnswerChoices));
+                .AddChoices(
+                    groupableItemsQuestion.AnswerChoices.Append(
+                        QuizConstants.SkipOptionText)));
+
+        if (multiSelection.Contains(QuizConstants.SkipOptionText)) return null;
 
         var selectedIndices = multiSelection
             .Select(answer => Array.IndexOf(groupableItemsQuestion.AnswerChoices, answer))

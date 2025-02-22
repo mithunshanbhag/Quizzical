@@ -119,15 +119,17 @@ internal class SinglePlayerConsoleQuizEngine(IConfiguration config, IQuizFactory
         AnsiConsole.Clear();
 
         var totalQuestions = quizEvaluation.QuestionResponses.Count;
-        var correctAnswers = quizEvaluation.QuestionResponses.Count(qr => qr.Value);
-        var incorrectAnswers = totalQuestions - correctAnswers;
+        var skippedAnswer = quizEvaluation.QuestionResponses.Count(qr => !qr.Value.HasValue);
+        var correctAnswers = quizEvaluation.QuestionResponses.Count(qr => qr.Value is true);
+        var incorrectAnswers = totalQuestions - correctAnswers - skippedAnswer;
 
         AnsiConsole.WriteLine($"Game Over! {Emoji.Known.ThumbsUp}");
         AnsiConsole.WriteLine();
         AnsiConsole.Write(new BreakdownChart()
             .Width(60)
             .AddItem("Right Answers", correctAnswers, Color.Green)
-            .AddItem("Wrong Answers", incorrectAnswers, Color.Red));
+            .AddItem("Wrong Answers", incorrectAnswers, Color.Red)
+            .AddItem("Skipped Answers", skippedAnswer, Color.Yellow));
 
         await Task.Delay(2000);
         AnsiConsole.WriteLine();

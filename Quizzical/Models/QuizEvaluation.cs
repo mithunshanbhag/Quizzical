@@ -2,5 +2,5 @@
 
 internal class QuizEvaluation
 {
-    public Dictionary<Question, bool> QuestionResponses { get; set; } = new();
+    public Dictionary<Question, bool?> QuestionResponses { get; set; } = [];
 }

@@ -8,7 +8,7 @@ internal class QuizFactory(IQuestionFactory questionFactory, ILogger<QuizFactory
 
         return request.QuestionType switch
         {
-            QuestionType.MultipleChoice or QuestionType.TrueFalse or QuestionType.GroupableItems => new Quiz { Config = request, Questions = questions },
+            QuestionType.MultipleChoice or QuestionType.TrueFalse or QuestionType.GroupableItems => new Quiz {Config = request, Questions = questions},
             _ => throw new NotSupportedException($"Question type {request.QuestionType} is not supported yet.")
         };
     }

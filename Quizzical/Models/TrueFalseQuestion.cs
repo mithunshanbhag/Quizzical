@@ -19,8 +19,10 @@ internal class TrueFalseQuestion : Question
     /// <returns>
     ///     True if the selected answer is correct; otherwise, false.
     /// </returns>
-    public override bool Evaluate(dynamic answer)
+    public override bool? Evaluate(dynamic? answer)
     {
+        if (answer == null) return null;
+
         bool selectedAnswer = answer;
 
         return selectedAnswer == CorrectAnswer;
