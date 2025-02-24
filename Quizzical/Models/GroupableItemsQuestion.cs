@@ -15,20 +15,12 @@ internal class GroupableItemsQuestion : Question
     /// </summary>
     public required int[] Groupable { get; set; }
 
-    /// <summary>
-    ///     Evaluates the user's selected answer against the correct answer.
-    /// </summary>
-    /// <param name="answer">
-    ///     The indices of the selected groupable items in the AnswerChoices array.
-    /// </param>
-    /// <returns>
-    ///     True if the selected answer is correct; otherwise, false.
-    /// </returns>
-    public override bool? Evaluate(dynamic? answer)
+    /// <inheritdoc />
+    public override bool? Evaluate(QuestionResponse questionResponse)
     {
-        if (answer == null) return null;
+        if (questionResponse.Response.IsT3) return null;
 
-        int[] selectedGroup = answer;
+        var selectedGroup = questionResponse.Response.AsT0;
 
         return selectedGroup.OrderBy(i => i).SequenceEqual(Groupable.OrderBy(i => i));
     }

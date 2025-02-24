@@ -1,10 +1,12 @@
+using OneOf.Types;
+
 namespace Quizzical.Strategies.Implementations;
 
 internal class MultipleChoiceQuizPlayStrategy : SinglePlayerConsoleQuizPlayStrategyBase
 {
-    protected override dynamic? CaptureUserResponse(Question question)
+    protected override QuestionResponse CaptureUserResponse(Question question)
     {
-        var multipleChoiceQuestion = (MultipleChoiceQuestion) question;
+        var multipleChoiceQuestion = (MultipleChoiceQuestion)question;
 
         var selectedAnswer = AnsiConsole.Prompt(
             new SelectionPrompt<string>()
@@ -15,10 +17,11 @@ internal class MultipleChoiceQuizPlayStrategy : SinglePlayerConsoleQuizPlayStrat
                     multipleChoiceQuestion.AnswerChoices.Append(
                         QuizConstants.SkipOptionText)));
 
-        if (selectedAnswer == QuizConstants.SkipOptionText) return null;
+        if (selectedAnswer == QuizConstants.SkipOptionText)
+            return new QuestionResponse { QuestionType = QuestionType.MultipleChoice, Response = new None() };
 
         var selectedAnswerIndex = Array.IndexOf(multipleChoiceQuestion.AnswerChoices, selectedAnswer);
 
-        return selectedAnswerIndex;
+        return new QuestionResponse { QuestionType = QuestionType.MultipleChoice, Response = selectedAnswerIndex };
     }
 }

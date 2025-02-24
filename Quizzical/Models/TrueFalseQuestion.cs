@@ -10,20 +10,12 @@ internal class TrueFalseQuestion : Question
     /// </summary>
     public required bool CorrectAnswer { get; set; }
 
-    /// <summary>
-    ///     Evaluates the user's selected answer against the correct answer.
-    /// </summary>
-    /// <param name="answer">
-    ///     The selected answer.
-    /// </param>
-    /// <returns>
-    ///     True if the selected answer is correct; otherwise, false.
-    /// </returns>
-    public override bool? Evaluate(dynamic? answer)
+    /// <inheritdoc />
+    public override bool? Evaluate(QuestionResponse questionResponse)
     {
-        if (answer == null) return null;
+        if (questionResponse.Response.IsT3) return null;
 
-        bool selectedAnswer = answer;
+        var selectedAnswer = questionResponse.Response.AsT2;
 
         return selectedAnswer == CorrectAnswer;
     }

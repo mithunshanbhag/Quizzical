@@ -40,7 +40,7 @@ internal abstract class SinglePlayerConsoleQuizPlayStrategyBase : IQuizPlayStrat
             .Columns(new TaskDescriptionColumn(), new ProgressBarColumn())
             .Start(ctx =>
             {
-                var progressTask = ctx.AddTask($"Question {index + 1} of {totalQuestions}", new ProgressTaskSettings {MaxValue = totalQuestions});
+                var progressTask = ctx.AddTask($"Question {index + 1} of {totalQuestions}", new ProgressTaskSettings { MaxValue = totalQuestions });
                 progressTask.Increment(index);
             });
 
@@ -48,7 +48,7 @@ internal abstract class SinglePlayerConsoleQuizPlayStrategyBase : IQuizPlayStrat
         AnsiConsole.WriteLine();
     }
 
-    protected abstract dynamic? CaptureUserResponse(Question question);
+    protected abstract QuestionResponse CaptureUserResponse(Question question);
 
     protected virtual bool ShowEvaluation(Question question, bool? evaluation, int index, int totalQuestions)
     {

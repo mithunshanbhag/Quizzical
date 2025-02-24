@@ -1,8 +1,10 @@
+using OneOf.Types;
+
 namespace Quizzical.Strategies.Implementations;
 
 internal class TrueFalseQuizPlayStrategy : SinglePlayerConsoleQuizPlayStrategyBase
 {
-    protected override dynamic? CaptureUserResponse(Question question)
+    protected override QuestionResponse CaptureUserResponse(Question question)
     {
         var selectedAnswer = AnsiConsole.Prompt(
             new SelectionPrompt<string>()
@@ -11,8 +13,8 @@ internal class TrueFalseQuizPlayStrategy : SinglePlayerConsoleQuizPlayStrategyBa
                 .PageSize(10)
                 .AddChoices(bool.TrueString, bool.FalseString, QuizConstants.SkipOptionText));
 
-        if (selectedAnswer == QuizConstants.SkipOptionText) return null;
-
-        return selectedAnswer == bool.TrueString;
+        return selectedAnswer == QuizConstants.SkipOptionText
+            ? new QuestionResponse { QuestionType = QuestionType.TrueFalse, Response = new None() }
+            : new QuestionResponse { QuestionType = QuestionType.TrueFalse, Response = selectedAnswer == bool.TrueString };
     }
 }

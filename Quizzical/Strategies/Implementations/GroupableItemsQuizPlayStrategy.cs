@@ -1,10 +1,12 @@
-﻿namespace Quizzical.Strategies.Implementations;
+﻿using OneOf.Types;
+
+namespace Quizzical.Strategies.Implementations;
 
 internal class GroupableItemsQuizPlayStrategy : SinglePlayerConsoleQuizPlayStrategyBase
 {
-    protected override dynamic? CaptureUserResponse(Question question)
+    protected override QuestionResponse CaptureUserResponse(Question question)
     {
-        var groupableItemsQuestion = (GroupableItemsQuestion) question;
+        var groupableItemsQuestion = (GroupableItemsQuestion)question;
 
         var multiSelection = AnsiConsole.Prompt(
             new MultiSelectionPrompt<string>()
@@ -16,12 +18,13 @@ internal class GroupableItemsQuizPlayStrategy : SinglePlayerConsoleQuizPlayStrat
                     groupableItemsQuestion.AnswerChoices.Append(
                         QuizConstants.SkipOptionText)));
 
-        if (multiSelection.Contains(QuizConstants.SkipOptionText)) return null;
+        if (multiSelection.Contains(QuizConstants.SkipOptionText))
+            return new QuestionResponse { QuestionType = QuestionType.GroupableItems, Response = new None() };
 
         var selectedIndices = multiSelection
             .Select(answer => Array.IndexOf(groupableItemsQuestion.AnswerChoices, answer))
             .ToArray();
 
-        return selectedIndices;
+        return new QuestionResponse { QuestionType = QuestionType.GroupableItems, Response = selectedIndices };
     }
 }

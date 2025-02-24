@@ -22,16 +22,16 @@ internal abstract class Question : IFlaggable
     public string? FlagReason { get; set; }
 
     /// <summary>
-    ///     Evaluates the user's selected answer against the correct answer.
+    ///     Evaluates the user's selected questionResponse against the correct answer.
     /// </summary>
     /// <remarks>
-    ///     The type of the answer parameter will depend on the type of question.
+    ///     The type of the questionResponse parameter will depend on the type of question.
     /// </remarks>
-    /// <param name="answer">
-    ///     The user's answer.
+    /// <param name="questionResponse">
+    ///     The user's response to the question.
     /// </param>
     /// <returns>
-    ///     True if the user's answer is correct; False if incorrect; Null if the user has skipped answering.
+    ///     True if the user's response is correct; False if incorrect; Null if the user has skipped answering.
     /// </returns>
-    public abstract bool? Evaluate(dynamic? answer);
+    public abstract bool? Evaluate(QuestionResponse questionResponse);
 }
