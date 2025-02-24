@@ -16,12 +16,21 @@ internal class GroupableItemsQuestion : Question
     public required int[] Groupable { get; set; }
 
     /// <inheritdoc />
-    public override bool? Evaluate(QuestionResponse questionResponse)
+    public override QuestionEvaluation Evaluate(QuestionResponse questionResponse)
     {
-        if (questionResponse.Response.IsT3) return null;
+        if (questionResponse.Response.IsT3)
+            return new QuestionEvaluation
+            {
+                Evaluation = new None(),
+                TimeTaken = questionResponse.TimeTaken
+            };
 
         var selectedGroup = questionResponse.Response.AsT0;
 
-        return selectedGroup.OrderBy(i => i).SequenceEqual(Groupable.OrderBy(i => i));
+        return new QuestionEvaluation
+        {
+            Evaluation = selectedGroup.OrderBy(i => i).SequenceEqual(Groupable.OrderBy(i => i)),
+            TimeTaken = questionResponse.TimeTaken
+        };
     }
 }

@@ -16,12 +16,21 @@ internal class MultipleChoiceQuestion : Question
     public required int CorrectAnswerIndex { get; set; }
 
     /// <inheritdoc />
-    public override bool? Evaluate(QuestionResponse questionResponse)
+    public override QuestionEvaluation Evaluate(QuestionResponse questionResponse)
     {
-        if (questionResponse.Response.IsT3) return null;
+        if (questionResponse.Response.IsT3)
+            return new QuestionEvaluation
+            {
+                Evaluation = new None(),
+                TimeTaken = questionResponse.TimeTaken
+            };
 
         var selectedAnswerIndex = questionResponse.Response.AsT1;
 
-        return selectedAnswerIndex == CorrectAnswerIndex;
+        return new QuestionEvaluation
+        {
+            Evaluation = selectedAnswerIndex == CorrectAnswerIndex,
+            TimeTaken = questionResponse.TimeTaken
+        };
     }
 }

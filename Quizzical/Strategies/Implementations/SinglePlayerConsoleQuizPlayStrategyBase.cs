@@ -25,7 +25,7 @@ internal abstract class SinglePlayerConsoleQuizPlayStrategyBase : IQuizPlayStrat
 
             var evaluation = currentQuestion.Evaluate(selectedAnswer);
 
-            quizResponse.QuestionResponses.Add(currentQuestion, evaluation);
+            quizResponse.Evaluations.Add(currentQuestion, evaluation);
 
             toContinue = ShowEvaluation(currentQuestion, evaluation, index, quiz.Questions.Length);
         }
@@ -50,15 +50,15 @@ internal abstract class SinglePlayerConsoleQuizPlayStrategyBase : IQuizPlayStrat
 
     protected abstract QuestionResponse CaptureUserResponse(Question question);
 
-    protected virtual bool ShowEvaluation(Question question, bool? evaluation, int index, int totalQuestions)
+    protected virtual bool ShowEvaluation(Question question, QuestionEvaluation evaluation, int index, int totalQuestions)
     {
         if (question.ExplanationText is not null)
         {
-            AnsiConsole.Markup(evaluation.HasValue
-                ? evaluation.Value
-                    ? "[green]Correct: [/]"
-                    : "[red]Incorrect: [/]"
-                : "[yellow]Skipped: [/]");
+            AnsiConsole.Markup(evaluation.Evaluation.IsT0
+                ? evaluation.Evaluation.AsT0
+                    ? $"[green]Correct ({evaluation.TimeTaken.Seconds} secs): [/]"
+                    : $"[red]Incorrect ({evaluation.TimeTaken.Seconds} secs): [/]"
+                : $"[yellow]Skipped ({evaluation.TimeTaken.Seconds} secs): [/]");
             AnsiConsole.MarkupLine(question.ExplanationText);
         }
 

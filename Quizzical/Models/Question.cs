@@ -31,7 +31,7 @@ internal abstract class Question : IFlaggable
     ///     The user's response to the question.
     /// </param>
     /// <returns>
-    ///     True if the user's response is correct; False if incorrect; Null if the user has skipped answering.
+    ///     True if the user's response is correct, false if it is incorrect, and null if the question is not yet answered.
     /// </returns>
-    public abstract bool? Evaluate(QuestionResponse questionResponse);
+    public abstract QuestionEvaluation Evaluate(QuestionResponse questionResponse);
 }

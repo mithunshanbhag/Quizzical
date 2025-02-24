@@ -118,9 +118,9 @@ internal class SinglePlayerConsoleQuizEngine(IConfiguration config, IQuizFactory
     {
         AnsiConsole.Clear();
 
-        var totalQuestions = quizEvaluation.QuestionResponses.Count;
-        var skippedAnswer = quizEvaluation.QuestionResponses.Count(qr => !qr.Value.HasValue);
-        var correctAnswers = quizEvaluation.QuestionResponses.Count(qr => qr.Value is true);
+        var totalQuestions = quizEvaluation.Evaluations.Count;
+        var skippedAnswer = quizEvaluation.Evaluations.Count(qr => qr.Value.Evaluation.IsT1);
+        var correctAnswers = quizEvaluation.Evaluations.Count(qr => qr.Value.Evaluation is { IsT0: true, AsT0: true });
         var incorrectAnswers = totalQuestions - correctAnswers - skippedAnswer;
 
         AnsiConsole.WriteLine($"Game Over! {Emoji.Known.ThumbsUp}");

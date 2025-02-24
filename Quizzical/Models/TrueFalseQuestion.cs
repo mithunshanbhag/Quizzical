@@ -11,12 +11,21 @@ internal class TrueFalseQuestion : Question
     public required bool CorrectAnswer { get; set; }
 
     /// <inheritdoc />
-    public override bool? Evaluate(QuestionResponse questionResponse)
+    public override QuestionEvaluation Evaluate(QuestionResponse questionResponse)
     {
-        if (questionResponse.Response.IsT3) return null;
+        if (questionResponse.Response.IsT3)
+            return new QuestionEvaluation
+            {
+                Evaluation = new None(),
+                TimeTaken = questionResponse.TimeTaken
+            };
 
         var selectedAnswer = questionResponse.Response.AsT2;
 
-        return selectedAnswer == CorrectAnswer;
+        return new QuestionEvaluation
+        {
+            Evaluation = selectedAnswer == CorrectAnswer,
+            TimeTaken = questionResponse.TimeTaken
+        };
     }
 }
