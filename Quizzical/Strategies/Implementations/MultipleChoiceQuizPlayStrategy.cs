@@ -1,5 +1,3 @@
-using OneOf.Types;
-
 namespace Quizzical.Strategies.Implementations;
 
 internal class MultipleChoiceQuizPlayStrategy : SinglePlayerConsoleQuizPlayStrategyBase
@@ -7,6 +5,8 @@ internal class MultipleChoiceQuizPlayStrategy : SinglePlayerConsoleQuizPlayStrat
     protected override QuestionResponse CaptureUserResponse(Question question)
     {
         var multipleChoiceQuestion = (MultipleChoiceQuestion)question;
+
+        var stopwatch = Stopwatch.StartNew();
 
         var selectedAnswer = AnsiConsole.Prompt(
             new SelectionPrompt<string>()
@@ -17,11 +17,13 @@ internal class MultipleChoiceQuizPlayStrategy : SinglePlayerConsoleQuizPlayStrat
                     multipleChoiceQuestion.AnswerChoices.Append(
                         QuizConstants.SkipOptionText)));
 
+        stopwatch.Stop();
+
         if (selectedAnswer == QuizConstants.SkipOptionText)
-            return new QuestionResponse { QuestionType = QuestionType.MultipleChoice, Response = new None() };
+            return new QuestionResponse { QuestionType = QuestionType.MultipleChoice, Response = new None(), TimeTaken = stopwatch.Elapsed };
 
         var selectedAnswerIndex = Array.IndexOf(multipleChoiceQuestion.AnswerChoices, selectedAnswer);
 
-        return new QuestionResponse { QuestionType = QuestionType.MultipleChoice, Response = selectedAnswerIndex };
+        return new QuestionResponse { QuestionType = QuestionType.MultipleChoice, Response = selectedAnswerIndex, TimeTaken = stopwatch.Elapsed };
     }
 }

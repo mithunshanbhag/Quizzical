@@ -1,11 +1,11 @@
-using OneOf.Types;
-
 namespace Quizzical.Strategies.Implementations;
 
 internal class TrueFalseQuizPlayStrategy : SinglePlayerConsoleQuizPlayStrategyBase
 {
     protected override QuestionResponse CaptureUserResponse(Question question)
     {
+        var stopwatch = Stopwatch.StartNew();
+
         var selectedAnswer = AnsiConsole.Prompt(
             new SelectionPrompt<string>()
                 //.Title("Select an answer:")
@@ -13,8 +13,10 @@ internal class TrueFalseQuizPlayStrategy : SinglePlayerConsoleQuizPlayStrategyBa
                 .PageSize(10)
                 .AddChoices(bool.TrueString, bool.FalseString, QuizConstants.SkipOptionText));
 
+        stopwatch.Stop();
+
         return selectedAnswer == QuizConstants.SkipOptionText
-            ? new QuestionResponse { QuestionType = QuestionType.TrueFalse, Response = new None() }
-            : new QuestionResponse { QuestionType = QuestionType.TrueFalse, Response = selectedAnswer == bool.TrueString };
+            ? new QuestionResponse { QuestionType = QuestionType.TrueFalse, Response = new None(), TimeTaken = stopwatch.Elapsed }
+            : new QuestionResponse { QuestionType = QuestionType.TrueFalse, Response = selectedAnswer == bool.TrueString, TimeTaken = stopwatch.Elapsed };
     }
 }

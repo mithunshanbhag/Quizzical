@@ -1,6 +1,7 @@
 // Global using directives
 
 global using System.ComponentModel;
+global using System.Diagnostics;
 global using System.Reflection;
 global using System.Text;
 global using System.Text.Json;
@@ -9,6 +10,8 @@ global using Microsoft.Extensions.Configuration;
 global using Microsoft.Extensions.DependencyInjection;
 global using Microsoft.Extensions.Hosting;
 global using Microsoft.Extensions.Logging;
+global using OneOf;
+global using OneOf.Types;
 global using OpenAI.Chat;
 global using Quizzical.Constants;
 global using Quizzical.Constants.Enums;
