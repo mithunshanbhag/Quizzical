@@ -15,6 +15,16 @@ internal abstract class Question : IFlaggable
     /// </summary>
     public string? ExplanationText { get; set; }
 
+    /// <summary>
+    ///    An optional hint to help the user answer the question.
+    /// </summary>
+    public string? AnswerHint { get; set; }
+
+    /// <summary>
+    ///    Optional time limit (in seconds) for each question. A value of 0 means no time limit.
+    /// </summary>
+    public int? QuestionTimeLimitInSecs { get; set; }
+
     /// <inheritdoc />
     public bool IsFlagged { get; set; }
 

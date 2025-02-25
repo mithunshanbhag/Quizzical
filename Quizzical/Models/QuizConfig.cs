@@ -29,4 +29,14 @@ internal class QuizConfig
     ///     The keywords associated with the question.
     /// </summary>
     public required List<string> Keywords { get; set; }
+
+    /// <summary>
+    ///    Whether to show hints to the user.
+    /// </summary>
+    public required bool ShowAnswerHints { get; set; }
+
+    /// <summary>
+    ///   The time limit (in seconds) for each question. A value of 0 means no time limit.
+    /// </summary>
+    public int QuestionTimeLimitInSecs { get; set; }
 }

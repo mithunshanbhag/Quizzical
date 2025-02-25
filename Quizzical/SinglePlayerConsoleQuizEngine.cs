@@ -73,7 +73,9 @@ internal class SinglePlayerConsoleQuizEngine(IConfiguration config, IQuizFactory
             Topic = quizConfig?.Topic ?? GetUserSelectedTopic(),
             Keywords = [],
             NumberOfQuestions = quizConfig?.NumberOfQuestions ?? GetUserSelectedNumberOfQuestions(),
-            DifficultyLevel = quizConfig?.DifficultyLevel ?? GetUserSelectedDifficultyLevel()
+            DifficultyLevel = quizConfig?.DifficultyLevel ?? GetUserSelectedDifficultyLevel(),
+            ShowAnswerHints = quizConfig?.ShowAnswerHints ?? QuizConstants.DefaultShowAnswerHints,
+            QuestionTimeLimitInSecs = quizConfig?.QuestionTimeLimitInSecs ?? QuizConstants.DefaultQuestionTimeLimitInSecs
         };
     }
 
