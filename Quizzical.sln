@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Quizzical.Core", "Quizzical
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Quizzical.Cli", "Quizzical.Cli\Quizzical.Cli.csproj", "{630C0D3B-01CF-4867-1A7F-BFA97CEDCA77}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Quizzical.Web", "Quizzical.Web\Quizzical.Web.csproj", "{21A9BCBA-07C9-49F8-9CF5-1FFC7F59F664}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{630C0D3B-01CF-4867-1A7F-BFA97CEDCA77}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{630C0D3B-01CF-4867-1A7F-BFA97CEDCA77}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{630C0D3B-01CF-4867-1A7F-BFA97CEDCA77}.Release|Any CPU.Build.0 = Release|Any CPU
+		{21A9BCBA-07C9-49F8-9CF5-1FFC7F59F664}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{21A9BCBA-07C9-49F8-9CF5-1FFC7F59F664}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{21A9BCBA-07C9-49F8-9CF5-1FFC7F59F664}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{21A9BCBA-07C9-49F8-9CF5-1FFC7F59F664}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
