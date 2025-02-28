@@ -1,6 +1,6 @@
-namespace Quizzical.Strategies.Implementations;
+namespace Quizzical.Cli.Strategies.Implementations;
 
-internal class MultipleChoiceQuizPlayStrategy : SinglePlayerConsoleQuizPlayStrategyBase
+public class MultipleChoiceQuizPlayStrategy : SinglePlayerConsoleQuizPlayStrategyBase
 {
     protected override QuestionResponse CaptureUserResponse(Question question)
     {

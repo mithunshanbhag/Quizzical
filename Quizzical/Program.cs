@@ -1,4 +1,7 @@
-﻿var host = Host
+﻿using Quizzical.Cli;
+using Quizzical.Cli.Misc.ExtensionMethods;
+
+var host = Host
     .CreateApplicationBuilder(args)
     .ConfigureApp()
     .ConfigureServices()

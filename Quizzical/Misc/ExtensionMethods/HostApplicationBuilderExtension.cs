@@ -1,6 +1,8 @@
-﻿namespace Quizzical.Misc.ExtensionMethods;
+﻿using Quizzical.Cli.Strategies.Implementations;
 
-internal static class HostApplicationBuilderExtension
+namespace Quizzical.Cli.Misc.ExtensionMethods;
+
+public static class HostApplicationBuilderExtension
 {
     public static HostApplicationBuilder ConfigureApp(this HostApplicationBuilder builder)
     {

@@ -1,9 +1,9 @@
-﻿namespace Quizzical.Strategies.Implementations;
+﻿namespace Quizzical.Cli.Strategies.Implementations;
 
 /// <summary>
 ///     Base strategy class for console-based, single-player quizzes.
 /// </summary>
-internal abstract class SinglePlayerConsoleQuizPlayStrategyBase : IQuizPlayStrategy
+public abstract class SinglePlayerConsoleQuizPlayStrategyBase : IQuizPlayStrategy
 {
     /// <remarks>
     ///     This uses the template design pattern. It defines a skeleton (template) method that calls into

@@ -1,4 +1,6 @@
-namespace Quizzical;
+using Quizzical.Cli.Strategies.Implementations;
+
+namespace Quizzical.Cli;
 
 /*
  * Rough algorithm:
@@ -19,7 +21,7 @@ namespace Quizzical;
  * 6. At any point, if the user wants to quit, they can do so by pressing Ctrl+C.
  */
 
-internal class SinglePlayerConsoleQuizEngine(IConfiguration config, IQuizFactory quizFactory, IEnumerable<IQuizPlayStrategy> quizPlayStrategies)
+public class SinglePlayerConsoleQuizEngine(IConfiguration config, IQuizFactory quizFactory, IEnumerable<IQuizPlayStrategy> quizPlayStrategies)
 {
     public async Task RunAsync(CancellationToken cancellationToken = default)
     {
