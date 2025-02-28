@@ -1,5 +1,3 @@
-using Quizzical.Cli.Strategies.Implementations;
-
 namespace Quizzical.Cli;
 
 /*
@@ -53,7 +51,7 @@ public class SinglePlayerConsoleQuizEngine(IConfiguration config, IQuizFactory q
     {
         return await AnsiConsole.Status()
             .Spinner(Spinner.Known.Dots)
-            .StartAsync("Generating questions...", async ctx => await quizFactory.GenerateAsync(quizConfig, cancellationToken));
+            .StartAsync("Generating questions...", async _ => await quizFactory.GenerateAsync(quizConfig, cancellationToken));
     }
 
     private static async Task ShowBanner(TimeSpan duration)
