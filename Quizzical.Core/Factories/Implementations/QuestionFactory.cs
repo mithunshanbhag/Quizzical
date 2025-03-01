@@ -47,7 +47,7 @@ public class QuestionFactory(ILogger<QuestionFactory> logger, ChatClient chatCli
     {
         return
         [
-            ChatMessage.CreateAssistantMessage(ChatConstants.AssistantMessage),
+            ChatMessage.CreateDeveloperMessage(ChatConstants.AssistantMessage),
             ChatMessage.CreateUserMessage(
                 $"Create {request.NumberOfQuestions} {request.QuestionType} questions on the topic of {request.Topic} with difficulty level {request.DifficultyLevel}")
         ];
