@@ -9,15 +9,21 @@
 	</PropertyGroup>
 
 	<ItemGroup>
+	  <Compile Remove="Factories\**" />
+	  <Compile Remove="Models\**" />
+	  <EmbeddedResource Remove="Factories\**" />
+	  <EmbeddedResource Remove="Models\**" />
+	  <None Remove="Factories\**" />
+	  <None Remove="Models\**" />
+	</ItemGroup>
+
+	<ItemGroup>
 		<PackageReference Include="Microsoft.Extensions.Hosting" Version="9.0.2" />
 		<PackageReference Include="Microsoft.Extensions.Logging.Console" Version="9.0.2" />
 	</ItemGroup>
 
 	<ItemGroup>
-		<Folder Include="Factories\Implementations\" />
-		<Folder Include="Factories\Interfaces\" />
 		<Folder Include="Misc\Utilities\" />
-		<Folder Include="Models\" />
 		<Folder Include="Services\Implementations\" />
 		<Folder Include="Services\Interfaces\" />
 		<Folder Include="Strategies\Interfaces\" />

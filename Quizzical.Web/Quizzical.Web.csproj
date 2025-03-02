@@ -4,10 +4,16 @@
     <TargetFramework>net9.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
+    <UserSecretsId>198c0870-5a72-4914-9b73-6aa8dbb995d0</UserSecretsId>
   </PropertyGroup>
 
 
   <ItemGroup>
     <PackageReference Include="MudBlazor" Version="8.*" />
+  </ItemGroup>
+
+
+  <ItemGroup>
+    <ProjectReference Include="..\Quizzical.Core\Quizzical.Core.csproj" />
   </ItemGroup>
 </Project>
