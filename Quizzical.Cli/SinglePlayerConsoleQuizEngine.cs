@@ -150,6 +150,6 @@ public class SinglePlayerConsoleQuizEngine(IConfiguration config, IQuizFactory q
                 .PageSize(8)
                 .HighlightStyle(Color.Cyan1.ToString())
                 .MoreChoicesText("[cyan](Move up and down to reveal more topics)[/]")
-                .AddChoices(AppConstants.PreSelectedTopics.Keys));
+                .AddChoices(QuizConstants.PreSelectedTopics.Keys));
     }
 }
