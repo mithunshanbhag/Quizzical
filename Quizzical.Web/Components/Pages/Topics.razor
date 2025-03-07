@@ -1,5 +1,6 @@
 ﻿@page "/"
 @using Spectre.Console
+@using Color = MudBlazor.Color
 
 @* @TODO: Replace favicon *@
 <PageTitle>@AppConstants.AppName</PageTitle>
@@ -8,39 +9,34 @@
     @* <div style="width:100%; background-color:aliceblue; height:100vh"></div> *@
     <div class="foo">
         <span style="display:block; text-align:center">@AppConstants.AppName</span>
-        <MudSelect T="string" 
-        AutoFocus="true" 
-        Style="margin:3px" 
-        Placeholder="@MudSelectPlaceholderText" 
-        Clearable="true"
-        SelectedValuesChanged="SelectedValuesChangedCallback"
-        TextChanged="TextChangedCallback"
-        ValueChanged="ValueChangedCallback">
-            @foreach (var kvp in QuizConstants.PreSelectedTopics)
-            {
-                <MudSelectItem Value="kvp.Key" >@kvp.Key</MudSelectItem>
-            }
-        </MudSelect>
+
+        <div class="bar">
+            <MudSelect T="string"
+                       @bind-Value="Selection"
+                       AutoFocus="true"
+                       Style="margin:3px"
+                       Placeholder="@PlaceholderText"
+                       Clearable="true">
+                @foreach (var kvp in QuizConstants.PreSelectedTopics)
+                {
+                    <MudSelectItem T="string" Value="kvp.Key">@kvp.Key</MudSelectItem>
+                }
+            </MudSelect>
+            
+            <MudFab Color="Color.Tertiary" StartIcon="@Icons.Material.Filled.Save" OnClick="ButtonClickCallback" ></MudFab>
+        </div>
     </div>
 </MudContainer>
 
 @code
 {
-    public string MudSelectPlaceholderText { get; } = $"What's your topic? {Emoji.Known.ThinkingFace}";
+    public string PlaceholderText => $"What's your topic? {Emoji.Known.ThinkingFace}";
 
-    private void ValueChangedCallback(string obj)
-    {
-        var x = obj;
-    }
+    public string? Selection { get; set; }
 
-    private void TextChangedCallback(string obj)
+    private void ButtonClickCallback(MouseEventArgs obj)
     {
-        var x = obj;
-    }
-
-    private void SelectedValuesChangedCallback(IEnumerable<string> obj)
-    {
-        var x = obj;
+        throw new NotImplementedException();
     }
 }
 
